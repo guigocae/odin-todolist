@@ -1,41 +1,5 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-
-export class LocalStorage {
-  static addTask(title, description, dateLimit, priority) {
-    const newTask = {
-      id: uuidv4(),
-      title,
-      description,
-      dateLimit,
-      priority,
-      done: false,
-    }
-
-    const savedTasks = this.getAllTasks();
-    savedTasks.push(newTask);
-    localStorage.setItem('tasks', JSON.stringify(savedTasks));
-  }
-
-  static removeTask(id) {
-    const tasks = this.getAllTasks();
-    const updatedTasks = tasks.filter((t) => t.id !== id);
-    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
-  }
-
-  static markAsDone(id) {
-    const tasks = this.getAllTasks();
-    const updateTasks = tasks.map((t) =>
-      t.id === id ? { ...t, done: true } : t
-    );
-    localStorage.setItem('tasks', JSON.stringify(updateTasks));
-  }
-
-  static getAllTasks() {
-    return JSON.parse(localStorage.getItem('tasks')) || [];
-  }
-}
-
+import { LocalStorage } from '../main';
 
 function TaskRegistry({ handleState }) {
   const [title, setTitle] = useState('');
@@ -43,14 +7,12 @@ function TaskRegistry({ handleState }) {
   const [dateLimit, setDateLimit] = useState('');
   const [priority, setPriority] = useState('');
 
-//   const [registrado, setRegistrado] = useState(false);
   const [erro, setErro] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const errors = {};
-    // setRegistrado(false);
 
     if (!title.trim()) errors.title = true;
     if (!description.trim()) errors.description = true;
@@ -63,8 +25,6 @@ function TaskRegistry({ handleState }) {
     }, 1000);
 
     if(Object.keys(errors).length === 0) {
-
-        // setRegistrado(true);
         LocalStorage.addTask(title, description, dateLimit, priority);
         handleState(false);
 
@@ -130,12 +90,6 @@ function TaskRegistry({ handleState }) {
           </div>
         )}
         <button type='submit'>Enviar</button>
-
-        {/* {registrado && (
-          <p style={{ color: 'green', marginTop: '10px' }}>
-            ✅ Registrado com sucesso!
-          </p>
-        )} */}
       </form>
     </>
   )
