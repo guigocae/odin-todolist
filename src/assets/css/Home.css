@@ -1,0 +1,24 @@
+.border-red { border: 1px solid red }
+
+.task-item {
+    box-sizing: border-box;
+    color: #242424;
+    background-color: azure;
+    max-width: 350px;
+    border-radius: 5px;
+    padding: 8px 10px;
+    margin-top: 10px;
+}
+
+.top-card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.priority-image {
+    width: 32px;
+}
+
+.priority-image img {
+    width: 100%;
+}
