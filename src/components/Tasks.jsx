@@ -1,7 +1,7 @@
 import { LocalStorage } from "../main";
 import TaskRegistry from "./TaskRegistry";
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, compareAsc } from "date-fns";
 
 const priorityImages = {
   low: "/green-flag.png",
@@ -22,7 +22,7 @@ function Modal({ isOpen, onClose, children }) {
   );
 }
 
-function Task({ task, onClick }) {
+export function Task({ task, onClick }) {
   const prioritySource = priorityImages[task.priority];
   const [year, month, day] = task.dateLimit.split('-').map(Number);
 
@@ -39,12 +39,30 @@ function Task({ task, onClick }) {
   );
 }
 
+function comparePriority(a, b) {
+  const priority = {low: 1, medium: 2, high: 3}
+  return priority[b] - priority[a];
+}
+
 function Tasks() {
   const [modalAberto, setModalAberto] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [editTask, setEditTask] = useState(false);
+  const [order, setOrder] = useState('priority');
 
-  const nowTasks = LocalStorage.getAllTasks();
+
+  const allTasks = LocalStorage.getAllTasks();
+  const nowTasks = allTasks.filter((task) => {
+    const [year, month, day] = task.dateLimit.split('-').map(Number);
+    const taskDate = new Date(year, month - 1, day);
+    const today = new Date();
+    
+    // Zera a hora, minuto, segundo e milissegundo para comparar apenas a data
+    today.setHours(0, 0, 0, 0);
+    taskDate.setHours(0, 0, 0, 0);
+  
+    return compareAsc(today, taskDate) <= 0;
+  });
 
   const openModal = (task) => {
     setSelectedTask(task);
@@ -58,7 +76,27 @@ function Tasks() {
 
   return (
     <>
-      {nowTasks.map((task) => (
+      <label htmlFor="order">Ordenar por</label>
+      <select 
+        id="order"
+        value={order}
+        onChange={(e) => setOrder(e.target.value)}
+      >
+        <option value="priority">Prioridade</option>
+        <option value="date">Data</option>
+      </select>
+
+      {order === "date" && 
+        nowTasks.sort((a, b) => compareAsc(a.dateLimit, b.dateLimit)).map((task) => (
+        <Task
+          key={task.id}
+          task={task}
+          onClick={openModal}
+        />
+      ))}
+
+      {order === "priority" && 
+        nowTasks.sort((a, b) => comparePriority(a.priority, b.priority)).map((task) => (
         <Task
           key={task.id}
           task={task}
@@ -90,7 +128,7 @@ function Tasks() {
                 _dateLimit={selectedTask.dateLimit} 
                 _priority={selectedTask.priority}
                 id={selectedTask.id}
-                onClose={() => {setModalAberto(false); setEditTask(false)}}
+                onClose={(id) => {setEditTask(false); setSelectedTask(LocalStorage.selectTask(id))}}
               /> :
               <div className="footer-modal">
                 <button onClick={() => setEditTask(true)}>Editar</button>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { format } from "date-fns";
 import { LocalStorage } from '../main';
 
 function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority, id, onClose }) {
@@ -35,9 +36,9 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
 
     if(Object.keys(errors).length === 0) {
       if(id) {
-        LocalStorage.editTask(id, title, description, dateLimit, priority);
-        onClose();
-        return
+        const newID = LocalStorage.editTask(id, title, description, dateLimit, priority);
+        onClose(newID);
+        return;
       }
       LocalStorage.addTask(title, description, dateLimit, priority);
       handleState(false);
@@ -66,8 +67,7 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
         {title && (
           <div className="form-item">
             <label htmlFor="description">Qual a descrição da tarefa?</label>
-            <input 
-              type="text" 
+            <textarea 
               id="description" 
               className={erro.description ? "border-red" : ""}
               value={description}
@@ -81,6 +81,7 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
               <input 
                 type="date" 
                 id="date-limit"
+                min={format(new Date(), 'yyyy-MM-dd')}
                 className={erro.dateLimit ? "border-red" : ""}
                 value={dateLimit}
                 onChange={(e) => setDateLimit(e.target.value)}

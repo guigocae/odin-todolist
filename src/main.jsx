@@ -28,6 +28,7 @@ export class LocalStorage {
     const savedTasks = this.getAllTasks();
     savedTasks.push(newTask);
     localStorage.setItem('tasks', JSON.stringify(savedTasks));
+    return newTask.id;
   }
 
   static removeTask(id) {
@@ -44,7 +45,7 @@ export class LocalStorage {
 
   static editTask(id, title, description, dateLimit, priority) {
     this.removeTask(id);
-    this.addTask(title, description, dateLimit, priority);
+    return this.addTask(title, description, dateLimit, priority);
   }
 
   static markAsDone(id) {

@@ -1,21 +1,18 @@
 import { Routes, Route, Link } from 'react-router-dom'
 import Home from './components/Home.jsx'
-
-function Tasks() {
-  return <h1>Tarefas</h1>
-}
+import Expired from './components/Expired.jsx'
 
 function App() {
   return (
     <>
       <nav>
         <Link to="/">Home</Link>
-        <Link to="/tarefas">Tarefas</Link>
+        <Link to="/tarefas">Expiradas</Link>
       </nav>
       <div id="content">
         <Routes>
           <Route path="/" element={<Home />}/>
-          <Route path='/tarefas' element={<Tasks />} />
+          <Route path='/tarefas' element={<Expired />} />
         </Routes>
       </div>
     </>
