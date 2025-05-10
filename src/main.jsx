@@ -42,6 +42,11 @@ export class LocalStorage {
     return selectedItem[0];
   }
 
+  static editTask(id, title, description, dateLimit, priority) {
+    this.removeTask(id);
+    this.addTask(title, description, dateLimit, priority);
+  }
+
   static markAsDone(id) {
     const tasks = this.getAllTasks();
     const updateTasks = tasks.map((t) =>

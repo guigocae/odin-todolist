@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LocalStorage } from '../main';
 
-function TaskRegistry({ handleState }) {
+function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority, id, onClose }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dateLimit, setDateLimit] = useState('');
   const [priority, setPriority] = useState('');
+
+  useEffect(() => {
+    if(id){
+      setTitle(_title);
+      setDescription(_description);
+      setDateLimit(_dateLimit);
+      setPriority(_priority);
+    }
+  }, []);
 
   const [erro, setErro] = useState({});
 
@@ -25,14 +34,19 @@ function TaskRegistry({ handleState }) {
     }, 1000);
 
     if(Object.keys(errors).length === 0) {
-        LocalStorage.addTask(title, description, dateLimit, priority);
-        handleState(false);
+      if(id) {
+        LocalStorage.editTask(id, title, description, dateLimit, priority);
+        onClose();
+        return
+      }
+      LocalStorage.addTask(title, description, dateLimit, priority);
+      handleState(false);
 
-        setTitle('');
-        setDescription('');
-        setDateLimit('');
-        setPriority('');
-        setErro('');
+      setTitle('');
+      setDescription('');
+      setDateLimit('');
+      setPriority('');
+      setErro('');
     }
   }
 
