@@ -1,0 +1,33 @@
+form {
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 25px;
+}
+
+.form-item input, #description, #priority {
+    width: 100%;
+    margin: 0;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgb(209, 209, 209);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-sizing: border-box;
+    resize: none;
+    font-family: Regular;
+}
+
+#description {
+    vertical-align: top;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none; /* remove a borda dourada */
+  border: 2px solid #2cc5a8; /* exemplo de borda personalizada */
+  box-shadow: 0 0 0 2px rgba(44, 197, 168, 0.3); /* efeito suave */
+}

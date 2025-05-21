@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { format } from "date-fns";
 import { LocalStorage } from '../main';
+import '../assets/css/TaskRegistry.css';
 
 function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority, id, onClose }) {
   const [title, setTitle] = useState('');
@@ -55,10 +56,10 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
     <>
       <form onSubmit={handleSubmit}>
         <div className="form-item">
-            <label htmlFor="title">Qual o título da tarefa?</label>
             <input 
               type="text" 
               id="title" 
+              placeholder='Digite o título da tarefa...'
               className={erro.title ? "border-red" : ""}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -66,9 +67,9 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
         </div>
         {title && (
           <div className="form-item">
-            <label htmlFor="description">Qual a descrição da tarefa?</label>
             <textarea 
               id="description" 
+              placeholder='Digite a descrição da tarefa...'
               className={erro.description ? "border-red" : ""}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -77,7 +78,6 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
         )}
         {title && description && (
           <div className="form-item">
-              <label htmlFor="date-limit">Qual a data limite?</label>
               <input 
                 type="date" 
                 id="date-limit"
@@ -90,21 +90,20 @@ function TaskRegistry({ handleState, _title, _description, _dateLimit, _priority
         )}
         {title && description && dateLimit && (
           <div className="form-item">
-              <label htmlFor="priority">Qual a prioridade?</label>
               <select 
                 id="priority"
                 className={erro.priority ? "border-red" : ""}
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
               >
-                  <option value="" disabled hidden>--- Selecione ---</option>
+                  <option value="" disabled hidden>Selecione a prioridade</option>
                   <option value="low">Baixa</option>
                   <option value="medium">Média</option>
                   <option value="high">Alta</option>
               </select>
           </div>
         )}
-        <button type='submit'>Enviar</button>
+        <button type='submit' style={{width: "fit-content", margin: "auto"}}>Enviar</button>
       </form>
     </>
   )

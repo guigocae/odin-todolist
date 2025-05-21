@@ -1,4 +1,4 @@
-import { LocalStorage } from "../main";
+import { LocalStorage, animateCSS } from "../main";
 import { compareAsc } from 'date-fns';
 import { Task } from "./Tasks";
 
@@ -14,10 +14,13 @@ export default function Expired() {
       
         return compareAsc(today, taskDate) > 0;
       });
+
+      animateCSS("#content", "fadeIn");
   
     return (
         <>
             <h1>Expiradas</h1>
+            {expiredTasks.length === 0 && <p>Não há tarefas expiradas</p>}
             {expiredTasks.sort((a, b) => compareAsc(a.dateLimit, b.dateLimit)).map((task) => (
                 <Task 
                     key={task.id}
@@ -26,4 +29,4 @@ export default function Expired() {
             ))}
         </>
     )
-  }
+}

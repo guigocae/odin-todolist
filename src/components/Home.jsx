@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { animateCSS } from "../main";
 import TaskRegistry from "./TaskRegistry";
 import Tasks from "./Tasks";
 import '../assets/css/Home.css';
@@ -10,11 +11,13 @@ function Home() {
     setRegister(true);
   }
 
+  animateCSS("#content", "fadeIn");
+
   return (
     <>
       <Tasks />
       {register ? <TaskRegistry handleState={setRegister} /> : (
-        <button onClick={toggleTask}>Adicionar Tarefa</button>
+        <button onClick={toggleTask} className="botao-adicionar">Adicionar Tarefa</button>
       )}
     </>
   )

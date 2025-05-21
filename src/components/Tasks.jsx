@@ -1,7 +1,10 @@
 import { LocalStorage } from "../main";
 import TaskRegistry from "./TaskRegistry";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format, compareAsc } from "date-fns";
+import Edit from '../assets/editar.png';
+import Remove from '../assets/lata-de-lixo.png';
+import 'animate.css';
 
 const priorityImages = {
   low: "/green-flag.png",
@@ -13,9 +16,9 @@ function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 
   return (
-    <div className="overlay">
+    <div className="overlay animate__animated animate__fadeIn">
       <div className="modal">
-        <button onClick={onClose} className="closeBtn">Fechar</button>
+        <div onClick={onClose} className="closeBtn">✘</div>
         {children}
       </div>
     </div>
@@ -32,9 +35,9 @@ export function Task({ task, onClick }) {
         <h3>{task.title}</h3>
         <div className="priority-image"><img src={prioritySource} /></div>
       </div>
-      <p>{task.description}</p>
-      <p>{format(new Date(year, month-1, day), "dd/MM/yyy")}</p>
-      {task.done && <p>Concluída</p>}
+      <p style={{fontSize: "14px"}}>{task.description}</p>
+      <p>{format(new Date(year, month-1, day), "dd/MM/yyyy")}</p>
+      {task.done && <p className="task-done">Concluída</p>}
     </div>
   );
 }
@@ -49,7 +52,6 @@ function Tasks() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [editTask, setEditTask] = useState(false);
   const [order, setOrder] = useState('priority');
-
 
   const allTasks = LocalStorage.getAllTasks();
   const nowTasks = allTasks.filter((task) => {
@@ -67,6 +69,12 @@ function Tasks() {
   const openModal = (task) => {
     setSelectedTask(task);
     setModalAberto(true);
+  };
+
+  const changeStatus = (e) => {
+    const updated = { ...selectedTask, done: e.target.checked };
+    setSelectedTask(updated);
+    LocalStorage.markAsDone(updated.id);
   };
 
   const removeTask = (selected) => {
@@ -110,13 +118,30 @@ function Tasks() {
             {!editTask && 
               (() => {
                 const [year, month, day] = selectedTask.dateLimit.split('-').map(Number);
+                let priority = null;
+                switch(selectedTask.priority) {
+                  case 'high':
+                    priority = 'Máxima';
+                    break;
+                  case 'medium':
+                    priority = 'Média';
+                    break;
+                  case 'low':
+                    priority = 'Baixa';
+                    break;
+                }
+
                 return (
                   <> 
-                    <h2>{selectedTask.title}</h2>
-                    <p>{selectedTask.description}</p>
-                    <p>Prazo: {format(new Date(year, month-1, day), "dd/MM/yyy")}</p>
-                    <p>Prioridade: {selectedTask.priority}</p>
-                    {selectedTask.done && <p>Status: Concluída</p>}
+                    <h2 style={{marginBottom: "5px"}}>{selectedTask.title}</h2>
+                    <p style={{fontSize: "14px", marginBottom: "10px"}}>{selectedTask.description}</p>
+                    <p>Prazo: {format(new Date(year, month-1, day), "dd/MM/yyyy")}</p>
+                    <p>Prioridade: {priority}</p>
+                    <label className="checkbox-wrapper">
+                      <input type="checkbox" onChange={changeStatus} checked={selectedTask.done}/>
+                      <span className="checkmark"></span> 
+                      {selectedTask.done === true ? "Concluída" : "Não concluída"}
+                    </label>
                   </>
                 ) 
               })()
@@ -129,10 +154,11 @@ function Tasks() {
                 _priority={selectedTask.priority}
                 id={selectedTask.id}
                 onClose={(id) => {setEditTask(false); setSelectedTask(LocalStorage.selectTask(id))}}
-              /> :
+              />
+               :
               <div className="footer-modal">
-                <button onClick={() => setEditTask(true)}>Editar</button>
-                <button onClick={() => removeTask(selectedTask)}>Excluir</button>
+                <div onClick={() => setEditTask(true)}><img src={Edit} style={{width: "100%"}}></img></div>
+                <div onClick={() => removeTask(selectedTask)}><img src={Remove} style={{width: "100%"}}></img></div>
               </div>
             }
           </>

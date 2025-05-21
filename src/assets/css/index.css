@@ -1,30 +1,53 @@
+@font-face {
+  font-family: Regular;
+  src: url("../Inter_18pt-Regular.ttf");
+}
+
+@font-face {
+  font-family: SemiBold;
+  src: url("../Inter_18pt-SemiBold.ttf");
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Regular, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --green-theme: #2cc5a8;
+  --animate-duration: 600ms;
 }
 
 * {
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none; /* evita menu de contexto em long press no iOS */
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
+  font-family: SemiBold;
+  color: var(--green-theme);
   text-decoration: inherit;
+  transition: 0.3s;
 }
 a:hover {
-  color: #535bf2;
+  color: #239d87;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 1.2em;
+  padding-block: 10px;
 }
 
 body {
@@ -32,30 +55,40 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2em;
   line-height: 1.1;
+  font-family: SemiBold;
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 13px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--green-theme);
+  color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  transition: 0.3s;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: #239d87;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
 }
 
 @media (prefers-color-scheme: light) {

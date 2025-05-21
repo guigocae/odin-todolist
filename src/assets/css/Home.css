@@ -1,14 +1,25 @@
-.border-red { border: 1px solid red }
+.border-red { border: 1px solid #ff2c2c !important;}
 
 .task-item {
     box-sizing: border-box;
     color: #242424;
-    background-color: azure;
+    background-color: white;
+    width: 100%;
     max-width: 350px;
-    border-radius: 5px;
+    border-radius: 13px;
     padding: 8px 10px;
     margin-top: 10px;
     cursor: pointer;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+h3, h2 {font-family: SemiBold;}
+
+.task-item:hover {
+    border: 2px solid #2cc5a8; /* exemplo de borda personalizada */
+    box-shadow: 0 0 0 2px rgba(44, 197, 168, 0.3); /* efeito suave */
 }
 
 .top-card {
@@ -17,7 +28,7 @@
 }
 
 .priority-image {
-    width: 32px;
+    width: 30px;
 }
 
 .priority-image img {
@@ -44,10 +55,105 @@
     width: 90%;
     color: black;
     position: relative;
+    margin-inline: 20px;
 }
 
 .closeBtn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 27px;
+    right: 31px;
+    cursor: pointer;
+    font-size: 18px;
+    /* border: 1px solid rgb(209, 209, 209);
+    border-radius: 50%;
+    padding-inline: 6px; */
 }
+
+.botao-adicionar {
+    margin-top: 20px;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 10px;
+}
+
+/* Esconde o checkbox padrão */
+.checkbox-wrapper input[type="checkbox"] {
+  display: none;
+}
+
+/* Estilo do círculo */
+.checkbox-wrapper .checkmark {
+  width: 20px;
+  height: 20px;
+  /* border: 1px solid var(--green-theme); */
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+/* Círculo preenchido quando marcado */
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-inline: 5px;
+  background-color: var(--green-theme);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 15px;
+}
+
+/* Círculo preenchido quando desmarcado */
+.checkbox-wrapper input[type="checkbox"] + .checkmark::after {
+  content: "✘";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-inline: 6px;
+  background-color: #ff2c2c;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 15px;
+}
+
+#order {
+    font-family: Regular;
+    border-radius: 4px;
+}
+
+.task-done {
+    font-size: 15px;
+    background-color: #239d87;
+    color: white;
+    width: fit-content;
+    margin-top: 5px;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.footer-modal > div {
+    width: 30px;
+    cursor: pointer;
+}
+
+.footer-modal {
+    width: fit-content;
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    position: absolute;
+    right: 26px;
+    bottom: 26px;
+}
+
